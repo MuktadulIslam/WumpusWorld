@@ -1,11 +1,16 @@
 const constants = require('./constants.js');
 const CaveBoard = require('./cave.js');
-const { generatePath } = require('./path.js');
+const Path = require('./path.js');
 
-let knowledgeBase = null, cave = null, totalNumberOfGold = 0, isKilled = false;
+let knowledgeBase = null, cave = null, numberOfGold = 0;
 let nextVisitableSquare = [];
 let moveList = [];
 
+function add_SubPath(path) {
+    for (i = 0; i < path.length; i++) {
+        moveList.push(path[i])
+    }
+}
 
 function add_as_safe_visitable_square(positionY, positionX) {
     try {
@@ -28,7 +33,7 @@ function total_new_visitable_squere() {
 
 function initializeCave(caveBoard) {
     cave = caveBoard;
-    totalNumberOfGold = CaveBoard.getTotalNumberOfGold(cave)
+    numberOfGold = CaveBoard.getTotalNumberOfGold(cave)
 }
 
 function initializeKnowledgeBase() {
@@ -219,61 +224,6 @@ function detectWumpus(pY, pX) {
     }
 }
 
-async function moveToNextPostion(cY, cX, nY, nX) {
-    if (cY == nY && cX == nX) return;
-
-    let possibleMoves = [];
-    // Finding the best moves by compairing the distence
-    if (cX > 0 && knowledgeBase[cY][cX - 1].safe) possibleMoves.push([cY, cX - 1, distenceOfTwoRooms(cY, cX - 1, nY, nX)])
-    if (cX + 1 < constants.CAVE_WIDTH && knowledgeBase[cY][cX + 1].safe) possibleMoves.push([cY, cX + 1, distenceOfTwoRooms(cY, cX + 1, nY, nX)])
-    if (cY > 0 && knowledgeBase[cY - 1][cX].safe) possibleMoves.push([cY - 1, cX, distenceOfTwoRooms(cY - 1, cX, nY, nX)])
-    if (cY + 1 < constants.CAVE_LENGTH && knowledgeBase[cY + 1][cX].safe) possibleMoves.push([cY + 1, cX, distenceOfTwoRooms(cY + 1, cX, nY, nX)])
-
-    let i, distence = Number.MAX_SAFE_INTEGER
-    let l = possibleMoves.length;
-    let bestNextMoveY, bestNextMoveX;
-    // console.log(possibleMoves)
-
-    for (i = 0; i < l; i++) {
-        if (distence > possibleMoves[i][2]) {
-            bestNextMoveY = possibleMoves[i][0];
-            bestNextMoveX = possibleMoves[i][1];
-            distence = possibleMoves[i][2];
-        }
-    }
-
-
-    let action = null, grab = null, move = null;
-    if (cave[bestNextMoveY][bestNextMoveX].includes(constants.DEAD_WUMPUS)) action = 'SHOOT';
-    else if (cave[bestNextMoveY][bestNextMoveX].includes(constants.WUMPUS) || cave[bestNextMoveY][bestNextMoveX].includes(constants.PIT)) {
-        action = 'DIE';
-        isKilled = true;
-    }
-    else action = "NO_ACTION";
-
-    if (cave[cY][cX].includes(constants.GOLD)) {
-        grab = true;
-        totalNumberOfGold--;
-        cave[cY][cX].filter(item => item !== constants.GOLD);
-    }
-    else grab = false;
-
-    // console.log(cY,cX,"   ", bestNextMoveY, bestNextMoveX, "   ", nY, nX, action, cave[bestNextMoveY][bestNextMoveX]);
-    // await sleep(500)
-
-    if (bestNextMoveY < cY) move = "UP"
-    else if (bestNextMoveY > cY) move = "DOWN";
-    else if (bestNextMoveX < cX) move = "LEFT";
-    else if (bestNextMoveX > cX) move = "RIGHT";
-
-    moveList.push({ move: move, action: action, grab: grab })
-
-    if (!isKilled && totalNumberOfGold > 0) {
-        moveToNextPostion(bestNextMoveY, bestNextMoveX, nY, nX)
-    }
-    else return;
-}
-
 function distenceOfTwoRooms(y1, x1, y2, x2) {
     let temp = 0;
     if (y1 > y2) temp = temp + y1 - y2;
@@ -382,6 +332,7 @@ function AI_move_By_Propositional_logic(cave) {
     // move list will contine an object which  will be like = {pY: ,pX: ,nY: ,nX: }
     initializeKnowledgeBase();
     initializeCave(cave);
+    add_SubPath([[0,0]])      // move from initial position to initial position
 
     add_as_safe_visitable_square(0, 0);             // as (1,1) is the current position of agent and it is safe
     let currentPositionY = 0, currentPositionX = 0;
@@ -390,18 +341,27 @@ function AI_move_By_Propositional_logic(cave) {
         let temp = get_next_visitable_squere();
         let nextPositionY = temp.y, nextPositionX = temp.x;
 
-        moveToNextPostion(currentPositionY, currentPositionX, nextPositionY, nextPositionX);
-        if(nextPositionY == 0 && nextPositionX == 1) generatePath(knowledgeBase, currentPositionY, currentPositionX, nextPositionY, nextPositionX)
+        // moveToNextPostion(currentPositionY, currentPositionX, nextPositionY, nextPositionX);
+        if (cave[nextPositionY][nextPositionX].includes(constants.GOLD)) {
+            numberOfGold--;
+            cave[nextPositionY][nextPositionX] = cave[nextPositionY][nextPositionX].filter(item => item !== constants.GOLD);
+            cave[nextPositionY][nextPositionX].push(constants.GOLD_IS_GRABBED);
+        }
+        add_SubPath(Path.generatePath(knowledgeBase, currentPositionY, currentPositionX, nextPositionY, nextPositionX))
+
+        if (cave[nextPositionY][nextPositionX].includes(constants.WUMPUS) || cave[nextPositionY][nextPositionX].includes(constants.PIT)
+        || numberOfGold <= 0) {
+            break;
+        }
+
         currentPositionY = nextPositionY;
         currentPositionX = nextPositionX;
         updateKnowledgeBase(currentPositionY, currentPositionX);
         detectWumpus(currentPositionY, currentPositionX);
-
-
-        if (totalNumberOfGold <= 0 || isKilled) break;
     }
 
-    console.log(moveList)
+    console.log(Path.addDirection_Action(cave, moveList))
+
     return moveList;
 }
 
@@ -409,7 +369,7 @@ AI_move_By_Propositional_logic(CaveBoard.initialize())
 // CaveBoard.printCave(cave)
 // printCave();
 // CaveBoard.printCave(CaveBoard.initialize());
-// console.log(CaveBoard.totalNumberOfGold(CaveBoard.initialize()))
+// console.log(CaveBoard.numberOfGold(CaveBoard.initialize()))
 
 module.exports = {
     AI_move_By_Propositional_logic
