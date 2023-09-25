@@ -65,12 +65,14 @@ function findSafeRooms(knowledgeBase) {
             }
         }
     }
+    return caveMatrix;
 }
 
 
 function generatePath(knowledgeBase, startPositionY, startPositionX, destinationY, destinationX) {
-    let safeRooms = findSafeRooms(knowledgeBase);
-    console.log(safeRooms)
+    let caveMatrix = findSafeRooms(knowledgeBase);
+    let path = findPathByBFS(caveMatrix, startPositionY, startPositionX, destinationY, destinationX)
+    console.log(path,"\n\n\n")
 }
 
 module.exports = {
