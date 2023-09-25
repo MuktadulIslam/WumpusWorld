@@ -1,4 +1,5 @@
 const WUMPUS = 'wum';
+const DEAD_WUMPUS = 'd_w';
 const PIT = 'pit';
 const GOLD = 'gld';
 const STENCH = 'stn';
@@ -10,5 +11,5 @@ const CAVE_LENGTH = 10;
 
 module.exports = {
     WUMPUS,PIT,GOLD,STENCH,BREEZE,OK,AGENT,
-    CAVE_LENGTH, CAVE_WIDTH
+    CAVE_LENGTH, CAVE_WIDTH, DEAD_WUMPUS
 }

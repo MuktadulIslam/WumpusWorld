@@ -13,13 +13,13 @@ function addPerceivation(cave) {
             if (isPitInAdj(cave, i, j)) {
                 temp.push(BREEZE);
             }
-            if(cave[i][j] == GOLD){
+            if(cave[i][j] === GOLD){
                 temp.push(GOLD);
             }
-            if(cave[i][j] == WUMPUS){
+            if(cave[i][j] === WUMPUS){
                 temp.push(WUMPUS);
             }
-            if(cave[i][j] == PIT){
+            if(cave[i][j] === PIT){
                 temp.push(PIT);
             }
 
@@ -50,7 +50,7 @@ function initialize() {
     return addPerceivation(cave);
 }
 
-function totalNumberOfGold(cave) {
+function getTotalNumberOfGold(cave) {
     let temp=0;
     for(let i=0;i<CAVE_LENGTH;i++) {
         for(let j=0;j<CAVE_WIDTH;j++) {
@@ -62,7 +62,7 @@ function totalNumberOfGold(cave) {
     return temp;
 }
 
-function totalNumberOfWumpus(cave) {
+function getTotalNumberOfWumpus(cave) {
     let temp=0;
     for(let i=0;i<CAVE_LENGTH;i++) {
         for(let j=0;j<CAVE_WIDTH;j++) {
@@ -89,10 +89,10 @@ function printCave(cave) {
 
 function isWumpusInAdj(cave, i, j) {
     if (
-        (i > 0 && cave[i - 1][j] == WUMPUS) ||
-        (i < CAVE_LENGTH-1 && cave[i + 1][j] == WUMPUS) ||
-        (j > 0 && cave[i][j - 1] == WUMPUS) ||
-        (j < CAVE_WIDTH-1 && cave[i][j + 1] == WUMPUS)
+        (i > 0 && cave[i - 1][j] === WUMPUS) ||
+        (i < CAVE_LENGTH-1 && cave[i + 1][j] === WUMPUS) ||
+        (j > 0 && cave[i][j - 1] === WUMPUS) ||
+        (j < CAVE_WIDTH-1 && cave[i][j + 1] === WUMPUS)
     )
         return true;
     else
@@ -101,10 +101,10 @@ function isWumpusInAdj(cave, i, j) {
 
 function isPitInAdj(cave, i, j) {
     if (
-        (i > 0 && cave[i - 1][j] == PIT) ||
-        (i < CAVE_LENGTH-1 && cave[i + 1][j] == PIT) ||
-        (j > 0 && cave[i][j - 1] == PIT) ||
-        (j < CAVE_WIDTH-1 && cave[i][j + 1] == PIT)
+        (i > 0 && cave[i - 1][j] === PIT) ||
+        (i < CAVE_LENGTH-1 && cave[i + 1][j] === PIT) ||
+        (j > 0 && cave[i][j - 1] === PIT) ||
+        (j < CAVE_WIDTH-1 && cave[i][j + 1] === PIT)
     )
         return true;
     else
@@ -112,5 +112,5 @@ function isPitInAdj(cave, i, j) {
 }
 
 module.exports = {
-    printCave, initialize, isPitInAdj, isWumpusInAdj, totalNumberOfGold, totalNumberOfWumpus
+    printCave, initialize, isPitInAdj, isWumpusInAdj, getTotalNumberOfGold, getTotalNumberOfWumpus
 }
