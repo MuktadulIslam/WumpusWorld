@@ -398,7 +398,7 @@ function AI_move_By_Propositional_logic(cave) {
     console.log("numberOfGolds=", numberOfGolds)
     console.log("numberOfArror=", numberOfArrors)
 
-    // console.log(Path.addDirection_Action(cave, moveList))
+    console.log(Path.addDirection_Action(cave, moveList))
     // console.log(moveList)
 
     return Path.addDirection_Action(cave, moveList);

@@ -54,7 +54,7 @@ function getBestAction(moveList, currentPositionY, currentPositionX) {
     return temp
 }
 
-function getNextActions(probabilityArray, numberOfArrow, currentPositionY, currentPositionX) {
+function getNextAction(probabilityArray, numberOfArrow, currentPositionY, currentPositionX) {
     const length = probabilityArray.length;
     let tempList = [];
 
@@ -76,6 +76,17 @@ function getNextActions(probabilityArray, numberOfArrow, currentPositionY, curre
                 else if (probabilityArray[i].pW > tempList[0].pW) {
                     tempList = [];
                     i--;
+                }
+            }
+        }
+        // sorting by using least pit probability
+        let l = tempList.length;
+        for(let i=0;i<l;i++) {
+            for(let j=1;j<l;j++) {
+                if(tempList[i].riskOfWumpus == tempList[j].riskOfWumpus && tempList[i].riskOfPit > tempList[j].riskOfPit) {
+                    let x = tempList[i];
+                    tempList[i] = tempList[j];
+                    tempList[j] = x;
                 }
             }
         }
@@ -108,7 +119,8 @@ function getAllUnvisitedRoomsProbaility(knowledgeBase) {
 
     for (i = 0; i < length; i++) {
         for (j = 0; j < width; j++) {
-            if (!knowledgeBase[i][j].visited && isAdjRoomVisited(knowledgeBase, length, width, i, j)) {
+            if (!knowledgeBase[i][j].visited && isAdjRoomVisited(knowledgeBase, length, width, i, j)
+            && knowledgeBase[i][j].wumpusProbability != 1 && knowledgeBase[i][j].pitProbability != 1) {
                 probabilityArray.push({ pW: knowledgeBase[i][j].wumpusProbability, pP: knowledgeBase[i][j].pitProbability, y: i, x: j });
             }
 
@@ -119,7 +131,7 @@ function getAllUnvisitedRoomsProbaility(knowledgeBase) {
 
 function makeProbabilisticMove(knowledgeBase, cave, numberOfArrow, currentPositionY, currentPositionX) {
     let temp = getAllUnvisitedRoomsProbaility(knowledgeBase);
-    return getNextActions(temp, numberOfArrow, currentPositionY, currentPositionX);
+    return getNextAction(temp, numberOfArrow, currentPositionY, currentPositionX);
 }
 
 module.exports = {

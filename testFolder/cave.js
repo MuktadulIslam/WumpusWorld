@@ -33,31 +33,31 @@ function addPerceivation(cave) {
 
 
 function initialize() {
-    // let cave = [
-    //     [AGENT, null, WUMPUS, null, null, null, null, null, null, null],
-    //     [null, null, null, null, null, null, null, null, WUMPUS, null],
-    //     [PIT, null, WUMPUS, null, PIT, null, GOLD, null, null, null],
-    //     [null, null, null, null, null, null, null, null, null, null],
-    //     [null, null, WUMPUS, null, null, null, null, null, PIT, null],
-    //     [null, null, null, GOLD, null, null, WUMPUS, null, null, null],
-    //     [null, null, null, null, null, null, null, null, null, WUMPUS],
-    //     [null, PIT, null, null, null, null, null, null, null, null],
-    //     [null, null, null, GOLD, null, null, null, GOLD, null, null],
-    //     [null, null, null, null, null, PIT, null, null, PIT, null]
-    // ];
-
     let cave = [
-        [AGENT, null, null, null, null, null, null, null, null, null],
-        [null, null, WUMPUS, null, null, null, null, null, null, null],
+        [AGENT, null, WUMPUS, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, WUMPUS, null],
+        [PIT, null, WUMPUS, null, PIT, null, GOLD, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
-        [WUMPUS, null, PIT, null, null, null, null, WUMPUS, null, null],
-        [null, null, WUMPUS, null, null, WUMPUS, null, null, null, null],
-        [null, GOLD, null, null, null, null, null, null, null, null],
-        [null, null, null, PIT, null, null, null, null, null, GOLD],
-        [null, WUMPUS, null, null, PIT, null, null, null, null, PIT],
-        [WUMPUS, null, null, PIT, null, null, null, null, PIT, null],
-        [PIT, GOLD, null, null, GOLD, null, null, WUMPUS, null, null]
+        [null, null, WUMPUS, null, null, null, null, null, PIT, null],
+        [null, null, null, GOLD, null, null, WUMPUS, null, null, null],
+        [null, null, null, null, null, null, null, null, null, WUMPUS],
+        [null, PIT, null, null, null, null, null, null, null, null],
+        [null, null, null, GOLD, null, null, null, GOLD, null, null],
+        [null, null, null, null, null, PIT, null, null, PIT, null]
     ];
+
+    // let cave = [
+    //     [AGENT, null, null, null, null, null, null, null, null, null],
+    //     [null, null, WUMPUS, null, null, null, null, null, null, null],
+    //     [null, null, null, null, null, null, null, null, null, null],
+    //     [WUMPUS, null, PIT, null, null, null, null, WUMPUS, null, null],
+    //     [null, null, WUMPUS, null, null, WUMPUS, null, null, null, null],
+    //     [null, GOLD, null, null, null, null, null, null, null, null],
+    //     [null, null, null, PIT, null, null, null, null, null, GOLD],
+    //     [null, WUMPUS, null, null, PIT, null, null, null, null, PIT],
+    //     [WUMPUS, null, null, PIT, null, null, null, null, PIT, null],
+    //     [PIT, GOLD, null, null, GOLD, null, null, WUMPUS, null, null]
+    // ];
 
     // return cave
     return addPerceivation(cave);
@@ -128,7 +128,7 @@ function randomCaveGeneration(numberOfGold, numberOfWumpus, numberOfPit) {
     let newCave = Array.from({ length: CAVE_LENGTH }, () => Array(CAVE_WIDTH).fill(null));
     let y,x;
 
-    newCave[0][0] = AGENT;
+    // console.log("numberOfGold= ",numberOfGold, "numberOfWumpus= ",numberOfWumpus, "numberOfPit= ",numberOfPit)
     // Assigning Gold
     for (let i = 0; i < numberOfGold; i++) {
         [y,x] = getRandomCoordinate(newCave, CAVE_LENGTH, CAVE_WIDTH);
@@ -145,6 +145,7 @@ function randomCaveGeneration(numberOfGold, numberOfWumpus, numberOfPit) {
         newCave[y][x] = PIT
     }
 
+    newCave[0][0] = AGENT;
     return addPerceivation(newCave)
 }
 
@@ -157,8 +158,6 @@ function getRandomCoordinate(cave, cave_length, cave_width) {
     }
     else return [y,x];
 }
-
-randomCaveGeneration(3, 3, 3);
 
 module.exports = {
     printCave, initialize, isPitInAdj, isWumpusInAdj, getTotalNumberOfGold, getTotalNumberOfWumpus, randomCaveGeneration

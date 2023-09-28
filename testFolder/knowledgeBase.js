@@ -17,8 +17,6 @@ function initializeKnowledgeBase(cave) {
     }
 
     knowledgeBase[0][0] = { wumpusProbability: 0, pitProbability: 0, visited: true }
-    knowledgeBase[0][1] = { wumpusProbability: null, pitProbability: null, visited: false }
-    knowledgeBase[1][0] = { wumpusProbability: null, pitProbability: null, visited: false }
     return knowledgeBase;
 }
 
@@ -55,8 +53,8 @@ function update(cave, knowledgeBase, currentY, currentX) {
     else {
         if (currentY > 0) knowledgeBase[currentY - 1][currentX].pitProbability = 0;
         if (currentY + 1 < length) knowledgeBase[currentY + 1][currentX].pitProbability = 0;
-        if (currentX > 0) knowledgeBase[currentY][currentX-1].pitProbability = 0;
-        if (currentX + 1 < width) knowledgeBase[currentY][currentX+1].pitProbability = 0;
+        if (currentX > 0) knowledgeBase[currentY][currentX - 1].pitProbability = 0;
+        if (currentX + 1 < width) knowledgeBase[currentY][currentX + 1].pitProbability = 0;
     }
 
     if (cave[currentY][currentX].includes(constants.STENCH)) {
@@ -84,13 +82,34 @@ function update(cave, knowledgeBase, currentY, currentX) {
     else {
         if (currentY > 0) knowledgeBase[currentY - 1][currentX].wumpusProbability = 0;
         if (currentY + 1 < length) knowledgeBase[currentY + 1][currentX].wumpusProbability = 0;
-        if (currentX > 0) knowledgeBase[currentY][currentX-1].wumpusProbability = 0;
-        if (currentX + 1 < width) knowledgeBase[currentY][currentX+1].wumpusProbability = 0;
+        if (currentX > 0) knowledgeBase[currentY][currentX - 1].wumpusProbability = 0;
+        if (currentX + 1 < width) knowledgeBase[currentY][currentX + 1].wumpusProbability = 0;
     }
 
     return knowledgeBase;
 }
 
+function updateFullKnowledgebase(cave, knowledgeBase, nextMoveY, nextMoveX) {
+    let length = knowledgeBase.length;
+    let width = knowledgeBase[0].length;
+
+    for (let i = 0; i < length; i++) {
+        for (let j = 0; j < width; j++) {
+            if (knowledgeBase[j][i].visited == true) knowledgeBase = update(cave, knowledgeBase, i, j);
+        }
+    }
+
+    if (cave[nextMoveY][nextMoveX].includes(constants.PIT)) {
+        knowledgeBase[nextMoveY][nextMoveX].wumpusProbability = 0;
+        knowledgeBase[nextMoveY][nextMoveX].pitProbability = 1;
+    }
+    else {
+        knowledgeBase[nextMoveY][nextMoveX].wumpusProbability = 0;
+        knowledgeBase[nextMoveY][nextMoveX].pitProbability = 0;
+    }
+    return knowledgeBase;
+}
+
 module.exports = {
-    initializeKnowledgeBase, update
+    initializeKnowledgeBase, update, updateFullKnowledgebase
 }
