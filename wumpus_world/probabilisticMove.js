@@ -1,63 +1,63 @@
-const CaveBoard = require('./cave.js');
-const { WUMPUS, PIT, STENCH } = require('./constants.js');
-
-function printCave(knowledgeBase) {
-    for (let i = 0; i < 10; i++) {
-        let line = '';
-        for (let j = 0; j < 10; j++) {
-            let element = ''
-            if (knowledgeBase[i][j].stench == true) element = element + "s=T";
-            else if (knowledgeBase[i][j].stench == false) element = element + "s=F";
-            else element = element + "s=N";
-
-            if (knowledgeBase[i][j].breeze == true) element = element + " b=T";
-            else if (knowledgeBase[i][j].breeze == false) element = element + " b=F";
-            else element = element + " b=N";
-
-            if (knowledgeBase[i][j].safe == true) element = element + " ss=T";
-            else if (knowledgeBase[i][j].safe == false) element = element + " ss=F";
-            else element = element + " ss=N";
-
-            line = line + element.padEnd(17, " ");
-        }
-        console.log(line);
-    }
-    console.log();
-}
-
-function getProbability(knowledgeBase, length, width, positionY, positionX, perceivation) {
-    let temp = 0;
-
-    if (positionY > 0 && knowledgeBase[positionY - 1][positionX][perceivation] === true) temp++;
-    if (positionY + 1 < length && knowledgeBase[positionY + 1][positionX][perceivation] === true) temp++;
-    if (positionX > 0 && knowledgeBase[positionY][positionX - 1][perceivation] === true) temp++;
-    if (positionX + 1 < width && knowledgeBase[positionY][positionX + 1][perceivation] === true) temp++
-
-    return temp / 4;
-}
-
 function isAdjRoomVisited(knowledgeBase, length, width, positionY, positionX) {
-    if (positionY > 0 && knowledgeBase[positionY - 1][positionX].safe === true ||
-        positionY + 1 < length && knowledgeBase[positionY + 1][positionX].safe === true ||
-        positionX > 0 && knowledgeBase[positionY][positionX - 1].safe === true ||
-        positionX + 1 < width && knowledgeBase[positionY][positionX + 1].safe === true)
+    if (positionY > 0 && knowledgeBase[positionY - 1][positionX].visited === true ||
+        positionY + 1 < length && knowledgeBase[positionY + 1][positionX].visited === true ||
+        positionX > 0 && knowledgeBase[positionY][positionX - 1].visited === true ||
+        positionX + 1 < width && knowledgeBase[positionY][positionX + 1].visited === true)
         return true;
     else return false;
 }
 
-function getBestAction(probabilityArray, numberOfArrow, currentPositionY, currentPositionX) {
-    console.log(probabilityArray);
-    //Sorting by probability of Wumpus in descending  order and probability of Pit acending order
-    let length = probabilityArray.length;
 
-    let temp = probabilityArray[0];
+function getBestAction(moveList, currentPositionY, currentPositionX) {
+    let temp = moveList[0];
+    const length = moveList.length;
+    for (let i = 1; i < length; i++) {
+        if (Math.abs(temp.positionY - currentPositionY) + Math.abs(temp.positionX - currentPositionX) >
+            Math.abs(moveList[i].positionY - currentPositionY) + Math.abs(moveList[i].positionX - currentPositionX))
+            temp = moveList[i];
+    }
+    return temp
+}
+
+function getNextAction(probabilityArray, numberOfArrow, currentPositionY, currentPositionX) {
+    const length = probabilityArray.length;
+    let tempList = [];
+
+    // getting arraylist of 100% safe rooms
     for (let i = 0; i < length; i++) {
-        if (temp.pW < probabilityArray[i].pW) temp = probabilityArray[i];
+        if (probabilityArray[i].pW == 0 && probabilityArray[i].pP == 0)
+            tempList.push({ action: "NO_ACTION", riskOfWumpus: 0, riskOfPit: 0, positionY: probabilityArray[i].y, positionX: probabilityArray[i].x });
     }
-    // geting the best action
-    if (probabilityArray[0].pW >= 0.5 && numberOfArrow > 0) {
-        return { action: "SHOOT", positionY: probabilityArray[0].y, positionX: probabilityArray[0].x };
+    if (tempList.length > 0) return getBestAction(tempList, currentPositionY, currentPositionX);
+
+    // geting the best action by shooting the wumpus
+    tempList = [];
+    if (numberOfArrow > 0) {
+        for (let i = 0; i < length; i++) {
+            if (probabilityArray[i].pW >= 0.5) {
+                if (tempList.length ==0 || probabilityArray[i].pW == tempList[0].riskOfWumpus) {
+                    tempList.push({ action: "SHOOT", riskOfWumpus: probabilityArray[i].pW, riskOfPit: probabilityArray[i].pP, positionY: probabilityArray[i].y, positionX: probabilityArray[i].x });
+                }
+                else if (probabilityArray[i].pW > tempList[0].pW) {
+                    tempList = [];
+                    i--;
+                }
+            }
+        }
+        // sorting by using least pit probability
+        let l = tempList.length;
+        for(let i=0;i<l;i++) {
+            for(let j=1;j<l;j++) {
+                if(tempList[i].riskOfWumpus == tempList[j].riskOfWumpus && tempList[i].riskOfPit > tempList[j].riskOfPit) {
+                    let x = tempList[i];
+                    tempList[i] = tempList[j];
+                    tempList[j] = x;
+                }
+            }
+        }
     }
+    if (tempList.length > 0) return getBestAction(tempList, currentPositionY, currentPositionX);
+
     // if agent not shooting the arrow then he will make move by taking minmum risk
     else {
         let temp = probabilityArray[0];
@@ -70,24 +70,20 @@ function getBestAction(probabilityArray, numberOfArrow, currentPositionY, curren
             else if ((temp.pW + temp.pP) > (probabilityArray[i].pW + probabilityArray[i].pP)) temp = probabilityArray[i];
         }
 
-        return { action: "NO_ACTION", riskOfWumpus:temp.pW,riskOfPit:temp.pP, positionY: temp.y, positionX: temp.x };
+        return { action: "NO_ACTION", riskOfWumpus: temp.pW, riskOfPit: temp.pP, positionY: temp.y, positionX: temp.x };
     }
 }
 
-function addProbability(knowledgeBase) {
+function getAllUnvisitedRoomsProbaility(knowledgeBase) {
     let i, j;
     let length = knowledgeBase.length;
     let width = knowledgeBase[0].length;
-    // const probabilityMatrix = Array.from({ length: length }, () => Array(width).fill(null));
     let probabilityArray = []
 
-    let probailityOfWumpus = 0, probailityOfPit = 0;
     for (i = 0; i < length; i++) {
         for (j = 0; j < width; j++) {
             if (!knowledgeBase[i][j].visited && isAdjRoomVisited(knowledgeBase, length, width, i, j)) {
-                probailityOfWumpus = getProbability(knowledgeBase, length, width, i, j, "stench");
-                probailityOfPit = getProbability(knowledgeBase, length, width, i, j, "breeze");
-                probabilityArray.push({ pW: probailityOfWumpus, pP: probailityOfPit, y: i, x: j });
+                probabilityArray.push({ pW: knowledgeBase[i][j].wumpusProbability, pP: knowledgeBase[i][j].pitProbability, y: i, x: j });
             }
 
         }
@@ -96,14 +92,9 @@ function addProbability(knowledgeBase) {
 }
 
 function makeProbabilisticMove(knowledgeBase, cave, numberOfArrow, currentPositionY, currentPositionX) {
-    console.log("numberOfArrow=", numberOfArrow);
-    CaveBoard.printCave(cave)
-    printCave(knowledgeBase)
-
-    let temp = getBestAction(addProbability(knowledgeBase), numberOfArrow, currentPositionY, currentPositionX)
-    console.log("currentPositionY=", currentPositionY, "     currentPositionX=",currentPositionX)
-    console.log(temp)
-
+    let temp = getAllUnvisitedRoomsProbaility(knowledgeBase);
+    // console.log(temp)
+    return [getNextAction(temp, numberOfArrow, currentPositionY, currentPositionX), temp];
 }
 
 module.exports = {

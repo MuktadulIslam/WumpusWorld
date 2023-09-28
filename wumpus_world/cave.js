@@ -128,7 +128,6 @@ function randomCaveGeneration(numberOfGold, numberOfWumpus, numberOfPit) {
     let newCave = Array.from({ length: CAVE_LENGTH }, () => Array(CAVE_WIDTH).fill(null));
     let y,x;
 
-    newCave[0][0] = AGENT;
     // Assigning Gold
     for (let i = 0; i < numberOfGold; i++) {
         [y,x] = getRandomCoordinate(newCave, CAVE_LENGTH, CAVE_WIDTH);
@@ -145,6 +144,7 @@ function randomCaveGeneration(numberOfGold, numberOfWumpus, numberOfPit) {
         newCave[y][x] = PIT
     }
 
+    newCave[0][0] = AGENT;
     return addPerceivation(newCave)
 }
 
@@ -157,8 +157,6 @@ function getRandomCoordinate(cave, cave_length, cave_width) {
     }
     else return [y,x];
 }
-
-randomCaveGeneration(3, 3, 3);
 
 module.exports = {
     printCave, initialize, isPitInAdj, isWumpusInAdj, getTotalNumberOfGold, getTotalNumberOfWumpus, randomCaveGeneration
