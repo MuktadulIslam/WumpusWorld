@@ -6,9 +6,9 @@ const KnowledgeBase = require('./knowledgeBase.js');
 function isWumpusInAdj(cave, i, j) {
     if (
         (i > 0 && cave[i - 1][j].includes(constants.WUMPUS)) ||
-        (i+1 < cave.length && cave[i + 1][j].includes(constants.WUMPUS)) ||
+        (i + 1 < cave.length && cave[i + 1][j].includes(constants.WUMPUS)) ||
         (j > 0 && cave[i][j - 1].includes(constants.WUMPUS)) ||
-        (j+1 < cave[0].length && cave[i][j + 1].includes(constants.WUMPUS))
+        (j + 1 < cave[0].length && cave[i][j + 1].includes(constants.WUMPUS))
     )
         return true;
     else
@@ -90,13 +90,16 @@ function killWumpus(cave, positionY, positionX, wumpusPositionY, wumpusPositionX
 
         if (actualWumpusPositionY == wumpusPositionY && actualWumpusPositionX == wumpusPositionX)
             return [cave, true];
+        else
+            return [cave, false]
     }
-    return [cave, false];
+    return [cave, null];
 }
 
 function AI_move_By_Propositional_logic(knowledgeBase, cave, numberOfArrors, currentPositionY, currentPositionX) {
-    const [move,possibleActions] = ProbabilisticMove.makeProbabilisticMove(knowledgeBase, cave, numberOfArrors, currentPositionY, currentPositionX);
+    const [move, possibleActions] = ProbabilisticMove.makeProbabilisticMove(knowledgeBase, cave, numberOfArrors, currentPositionY, currentPositionX);
     let direction_Action = []
+    let wumpusKilled = false;
 
     if (move.action == "SHOOT") {
         let path = Path.generatePath(knowledgeBase, currentPositionY, currentPositionX, move.positionY, move.positionX);
@@ -104,20 +107,15 @@ function AI_move_By_Propositional_logic(knowledgeBase, cave, numberOfArrors, cur
         const temp = killWumpus(cave, path[path.length - 2][0], path[path.length - 2][1], move.positionY, move.positionX);
         cave = temp[0];
 
-        if (temp[1]) {
-            //if wumpusis killed
-            knowledgeBase = KnowledgeBase.update(cave, knowledgeBase, move.positionY, move.positionX);
-        } else {
-            knowledgeBase[move.positionY][move.positionX].wumpusProbability = 0;
-        }
+        if(temp[1] != null) wumpusKilled = true;
 
-        if (knowledgeBase[move.positionY][move.positionX].pitProbability == 0 || knowledgeBase[move.positionY][move.positionX].wumpusProbability == 0) {
-            knowledgeBase[move.positionY][move.positionX].visited = true;
+        if (temp[1] == true) {
+            //if wumpusis killed in adj-room
+            knowledgeBase = KnowledgeBase.update(cave, knowledgeBase, move.positionY, move.positionX);
             direction_Action = Path.addDirection_Action(cave, path)
             direction_Action[direction_Action.length - 2].probabilityOfKilling = move.riskOfWumpus;
-        }
-        // if agent see pit in the next room after shooting the arrow then it will again try the best move 
-        else {
+        } else{
+            knowledgeBase[move.positionY][move.positionX].wumpusProbability = 0;
             path.pop();
             direction_Action = Path.addDirection_Action(cave, path)
             const length = direction_Action.length;
@@ -136,7 +134,7 @@ function AI_move_By_Propositional_logic(knowledgeBase, cave, numberOfArrors, cur
         direction_Action[length - 1].riskOfPit = move.riskOfPit;
     }
 
-    return [knowledgeBase, cave, direction_Action,possibleActions];
+    return [knowledgeBase, cave, direction_Action, possibleActions, wumpusKilled];
 }
 
 module.exports = {

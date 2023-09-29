@@ -33,31 +33,31 @@ function addPerceivation(cave) {
 
 
 function initialize() {
-    // let cave = [
-    //     [AGENT, null, WUMPUS, null, null, null, null, null, null, null],
-    //     [null, null, null, null, null, null, null, null, WUMPUS, null],
-    //     [PIT, null, WUMPUS, null, PIT, null, GOLD, null, null, null],
-    //     [null, null, null, null, null, null, null, null, null, null],
-    //     [null, null, WUMPUS, null, null, null, null, null, PIT, null],
-    //     [null, null, null, GOLD, null, null, WUMPUS, null, null, null],
-    //     [null, null, null, null, null, null, null, null, null, WUMPUS],
-    //     [null, PIT, null, null, null, null, null, null, null, null],
-    //     [null, null, null, GOLD, null, null, null, GOLD, null, null],
-    //     [null, null, null, null, null, PIT, null, null, PIT, null]
-    // ];
-
     let cave = [
-        [AGENT, null, null, null, null, null, null, null, null, null],
-        [null, null, WUMPUS, null, null, null, null, null, null, null],
+        [AGENT, null, WUMPUS, null, null, null, null, null, null, null],
+        [null, null, null, null, null, null, null, null, WUMPUS, null],
+        [PIT, null, WUMPUS, null, PIT, null, GOLD, null, null, null],
         [null, null, null, null, null, null, null, null, null, null],
-        [WUMPUS, null, PIT, null, null, null, null, WUMPUS, null, null],
-        [null, null, WUMPUS, null, null, WUMPUS, null, null, null, null],
-        [null, GOLD, null, null, null, null, null, null, null, null],
-        [null, null, null, PIT, null, null, null, null, null, GOLD],
-        [null, WUMPUS, null, null, PIT, null, null, null, null, PIT],
-        [WUMPUS, null, null, PIT, null, null, null, null, PIT, null],
-        [PIT, GOLD, null, null, GOLD, null, null, WUMPUS, null, null]
+        [null, null, WUMPUS, null, null, null, null, null, PIT, null],
+        [null, null, null, GOLD, null, null, WUMPUS, null, null, null],
+        [null, null, null, null, null, null, null, null, null, WUMPUS],
+        [null, PIT, null, null, null, null, null, null, null, null],
+        [null, null, null, GOLD, null, null, null, GOLD, null, null],
+        [null, null, null, null, null, PIT, null, null, PIT, null]
     ];
+
+    // let cave = [
+    //     [AGENT, null, null, null, null, null, null, null, null, null],
+    //     [null, null, WUMPUS, null, null, null, null, null, null, null],
+    //     [null, null, null, null, null, null, null, null, null, null],
+    //     [WUMPUS, null, PIT, null, null, null, null, WUMPUS, null, null],
+    //     [null, null, WUMPUS, null, null, WUMPUS, null, null, null, null],
+    //     [null, GOLD, null, null, null, null, null, null, null, null],
+    //     [null, null, null, PIT, null, null, null, null, null, GOLD],
+    //     [null, WUMPUS, null, null, PIT, null, null, null, null, PIT],
+    //     [WUMPUS, null, null, PIT, null, null, null, null, PIT, null],
+    //     [PIT, GOLD, null, null, GOLD, null, null, WUMPUS, null, null]
+    // ];
 
     // return cave
     return addPerceivation(cave);

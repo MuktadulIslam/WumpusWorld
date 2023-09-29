@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Grid Board</title>
+    <style>
+        /* width */
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        /* Style for the input field */
+        input {
+            width: 100px;
+            /* Adjust the width as needed */
+        }
+
+        .board-container {
+            display: flex;
+            flex-direction: row-reverse;
+            flex-wrap: wrap;
+            padding-top: 20px;
+        }
+
+        .action-moves {
+            width: 26vw;
+            height: 83vh;
+            margin-right: 20px;
+        }
+
+        .class1 {
+            display: block;
+            position: relative;
+            width: 100%;
+            height: 45%;
+            margin-bottom: 2%;
+            border: 2px solid black;
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1>Dynamic Grid Board Generator</h1>
+        <label for="inputNumber">Cave Size:</label>
+        <input type="range" id="inputNumber" min="1" max="20" step="1" value="10">
+        <span id="inputValue">10</span>
+        <button id="generateButton">Generate Board</button>
+        <span>Arrors = </span>
+        <span id="arrors">5</span>
+        <span>Collected Gold = </span>
+        <span id="collected-gold">5</span>
+        <span>Total Points = </span>
+        <span id="points">5</span>
+    </div>
+
+    <div class="board-container">
+        <table class="board" id="board1" style="width: 45vw; height: 45vw;"></table>
+        <div class="board" style="width: 25vw;">
+            <table class="board" id="board2" style="width: 23vw; height: 23vw; margin-bottom: 10px;"></table>
+            <table class="board" id="board3" style="width: 23vw; height: 23vw;"></table>
+        </div>
+        <div class="action-moves">
+            <p style="margin: 0;">Possible Actions</p>
+            <div class="class1" id="possible-actions"></div>
+            <p style="margin: 0;">All Moves</p>
+            <div class="class1" id="all-moves"></div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        const inputNumber = document.getElementById('inputNumber');
+        const inputValue = document.getElementById('inputValue');
+        const generateButton = document.getElementById('generateButton');
+
+        // Initialize input value display
+        inputValue.textContent = inputNumber.value;
+
+        // Event listener to update input value display
+        inputNumber.addEventListener('input', function () {
+            inputValue.textContent = inputNumber.value;
+        });
+
+        function generateBoard() {
+            for (let i = 1; i <= 3; i++) {
+                const boardContainer = document.getElementById(`board${i}`)
+                const numCols = parseInt(inputNumber.value);
+                const numRows = numCols;
+
+                // Clear existing board
+                boardContainer.innerHTML = '';
+
+                for (let i = 0; i < numRows; i++) {
+                    const row = document.createElement('tr');
+                    for (let j = 0; j < numCols; j++) {
+                        const cell = document.createElement('td');
+                        row.appendChild(cell);
+                    }
+                    boardContainer.appendChild(row);
+                }
+            }
+        }
+
+        generateButton.addEventListener('click', generateBoard);
+        // Initial board generation
+        generateBoard();
+    </script>
+</body>
+
+</html>

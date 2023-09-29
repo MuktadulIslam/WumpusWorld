@@ -26,6 +26,7 @@ while (true) {
     const allMoves = temp[2];
     const totalMoves = allMoves.length;
     const possibleActions = temp[3];
+    const isWumpusKilled = temp[4];
     console.log(possibleActions);
 
     for (let i = 0; i < totalMoves; i++) {
@@ -35,6 +36,7 @@ while (true) {
             numberOfArrors--;
             totalPoint -= 10;
             // make a shoot
+            if(isWumpusKilled) totalPoint += 1000;
             if (i + 1 == totalMoves) {
                 console.log("totalPoint= ", totalPoint);
                 break;
