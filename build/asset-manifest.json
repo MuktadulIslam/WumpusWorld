@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/wumpus_world/static/css/main.eded2f4e.css",
+    "main.js": "/wumpus_world/static/js/main.095815cc.js",
+    "static/js/787.2c322def.chunk.js": "/wumpus_world/static/js/787.2c322def.chunk.js",
+    "static/media/bg.png": "/wumpus_world/static/media/bg.883c248e210306ecc62f.png",
+    "static/media/win.wav": "/wumpus_world/static/media/win.abeb47073e87976cdb18.wav",
+    "static/media/game-over.wav": "/wumpus_world/static/media/game-over.ff856d4ec0b36a162845.wav",
+    "static/media/grab.wav": "/wumpus_world/static/media/grab.105e220c664c62490ce0.wav",
+    "static/media/miss.wav": "/wumpus_world/static/media/miss.1ce36ad931be87c0f710.wav",
+    "static/media/move.wav": "/wumpus_world/static/media/move.e8c6c391d7f99ba65c9f.wav",
+    "static/media/kill.wav": "/wumpus_world/static/media/kill.80facc2fcb5d469c049b.wav",
+    "static/media/opened.png": "/wumpus_world/static/media/opened.99d301fd03145fb13e7d.png",
+    "index.html": "/wumpus_world/index.html",
+    "main.eded2f4e.css.map": "/wumpus_world/static/css/main.eded2f4e.css.map",
+    "main.095815cc.js.map": "/wumpus_world/static/js/main.095815cc.js.map",
+    "787.2c322def.chunk.js.map": "/wumpus_world/static/js/787.2c322def.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.eded2f4e.css",
+    "static/js/main.095815cc.js"
+  ]
+}
