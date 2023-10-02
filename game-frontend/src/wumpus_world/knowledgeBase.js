@@ -77,14 +77,19 @@ function update(cave, knowledgeBase, currentY, currentX) {
     let length = knowledgeBase.length;
     let width = knowledgeBase[0].length;
     knowledgeBase[currentY][currentX].visited = true;
-    knowledgeBase[currentY][currentX].wumpusProbability = 0;
-    knowledgeBase[currentY][currentX].pitProbability = 0;
+
+    if (!(cave[currentY][currentX].includes(constants.WUMPUS) || cave[currentY][currentX].includes(constants.PIT))) {
+        knowledgeBase[currentY][currentX].wumpusProbability = 0;
+        knowledgeBase[currentY][currentX].pitProbability = 0;
+    }
 
     for (let i = 0; i < length; i++) {
         for (let j = 0; j < width; j++) {
             if (knowledgeBase[i][j].visited != true) {
-                knowledgeBase[i][j].pitProbability = null;
-                knowledgeBase[i][j].wumpusProbability = null;
+                if (knowledgeBase[i][j].pitProbability < 1 && knowledgeBase[i][j].pitProbability != 0)
+                    knowledgeBase[i][j].pitProbability = null;
+                if (knowledgeBase[i][j].wumpusProbability < 1 && knowledgeBase[i][j].wumpusProbability != 0)
+                    knowledgeBase[i][j].wumpusProbability = null;
             }
         }
     }

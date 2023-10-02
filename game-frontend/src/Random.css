@@ -1,0 +1,96 @@
+.input-container {
+    background-color: rgba(0, 0, 0, 0.728);
+    text-align: center;
+    margin: 20px;
+  }
+  
+  .label-18 {
+    color: rgb(251, 255, 2);
+    font-size: 18px;
+    padding-right: 10px;
+    transition: color 0.3s ease; /* Add a smooth color transition */
+  }
+  
+  .label-18:hover {
+    color: #e320bf; /* Change the text color on hover to your custom color */
+  }
+  
+  
+  .input-18 {
+    width: 50px;
+    padding: 2px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Add a 3D effect */
+    transition: transform 0.2s ease; /* Add a smooth transition on hover */
+  }
+  
+  #inputNumber {
+    width: 200px;
+  }
+  
+  span {
+    font-size: 18px;
+    margin-left: 10px;
+  }
+  
+  .button-18 {
+    padding-left: 20px;
+    appearance: button;
+    background-color: #1899D6;
+    border: solid transparent;
+    border-radius: 16px;
+    border-width: 0 0 4px;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: din-round, sans-serif;
+    font-size: 8px;
+    font-weight: 200;
+    letter-spacing: 0.8px;
+    line-height: 20px;
+    margin: 0;
+    outline: none;
+    overflow: visible;
+    padding: 5px 7px;
+    text-align: center;
+    text-transform: uppercase;
+    touch-action: manipulation;
+    transform: translateZ(0);
+    transition: filter 0.2s;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  
+  .button-18:after {
+    background-clip: padding-box;
+    background-color: #1CB0F6;
+    border: solid transparent;
+    border-radius: 16px;
+    border-width: 0 0 4px;
+    bottom: -4px;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
+  }
+  
+  .button-18:main,
+  .button-18:focus {
+    user-select: auto;
+  }
+  
+  .button-18:hover:not(:disabled) {
+    filter: brightness(1.1);
+    -webkit-filter: brightness(1.1);
+  }
+  
+  .button-18:disabled {
+    cursor: auto;
+  }
+  

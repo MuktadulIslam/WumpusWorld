@@ -20,6 +20,7 @@ function getBestAction(moveList, currentPositionY, currentPositionX) {
 }
 
 function getNextAction(probabilityArray, numberOfArrow, currentPositionY, currentPositionX) {
+    if (probabilityArray == null || probabilityArray.length == 0) return null
     const length = probabilityArray.length;
     let tempList = [];
 
@@ -31,33 +32,20 @@ function getNextAction(probabilityArray, numberOfArrow, currentPositionY, curren
     if (tempList.length > 0) return getBestAction(tempList, currentPositionY, currentPositionX);
 
     // geting the best action by shooting the wumpus
-    tempList = [];
+    let temp = null;
     if (numberOfArrow > 0) {
+        // getting the best move by using least pit and most wumpus probability
         for (let i = 0; i < length; i++) {
             if (probabilityArray[i].pW >= 0.5) {
-                if (tempList.length ==0 || probabilityArray[i].pW == tempList[0].riskOfWumpus) {
-                    tempList.push({ action: "SHOOT", riskOfWumpus: probabilityArray[i].pW, riskOfPit: probabilityArray[i].pP, positionY: probabilityArray[i].y, positionX: probabilityArray[i].x });
-                }
-                else if (probabilityArray[i].pW > tempList[0].pW) {
-                    tempList = [];
-                    i--;
-                }
-            }
-        }
-        // sorting by using least pit probability
-        let l = tempList.length;
-        for(let i=0;i<l;i++) {
-            for(let j=1;j<l;j++) {
-                if(tempList[i].riskOfWumpus == tempList[j].riskOfWumpus && tempList[i].riskOfPit > tempList[j].riskOfPit) {
-                    let x = tempList[i];
-                    tempList[i] = tempList[j];
-                    tempList[j] = x;
+                if(temp == null) temp = probabilityArray[i];
+                else{
+                    if(probabilityArray[i].pW > temp.pW) temp = probabilityArray[i];
+                    else if(probabilityArray[i].pW == temp.pW && temp.pP > probabilityArray[i].pP) temp = probabilityArray[i];
                 }
             }
         }
     }
-    if (tempList.length > 0) return getBestAction(tempList, currentPositionY, currentPositionX);
-
+    if(temp != null) return { action: "SHOOT", riskOfWumpus: temp.pW, riskOfPit: temp.pP, positionY: temp.y, positionX: temp.x };
     // if agent not shooting the arrow then he will make move by taking minmum risk
     else {
         let temp = probabilityArray[0];
@@ -93,7 +81,6 @@ function getAllUnvisitedRoomsProbaility(knowledgeBase) {
 
 function makeProbabilisticMove(knowledgeBase, cave, numberOfArrow, currentPositionY, currentPositionX) {
     let temp = getAllUnvisitedRoomsProbaility(knowledgeBase);
-    // console.log(temp)
     return [getNextAction(temp, numberOfArrow, currentPositionY, currentPositionX), temp];
 }
 

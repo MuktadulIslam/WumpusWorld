@@ -1,0 +1,121 @@
+body{
+  height: 120vh;
+}
+
+.App {
+  text-align: center;
+  background-image: url('/public/images/bg.png');
+  background-size: 100% 100%; 
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center; 
+}
+
+.App-header {
+  padding-top: 1vh;
+  font-size: calc(30px + 2vmin);
+  font-weight: bold;
+  color: rgb(246, 246, 240);
+  font-size: larger;
+  text-align: center
+}
+
+.App-body {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(15px + 2vmin);
+  color: rgb(246, 246, 240);
+  margin: 0 0 0 0;
+}
+
+/* .board-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+} */
+
+
+footer{
+  min-height: 3vh;
+  background-color: black;
+  color: bisque;
+}
+
+/* CSS */
+.button-19 {
+  appearance: button;
+  background-color: #1899D6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: din-round,sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  line-height: 20px;
+  margin: 0;
+  outline: none;
+  overflow: visible;
+  padding: 13px 16px;
+  text-align: center;
+  text-transform: uppercase;
+  touch-action: manipulation;
+  transform: translateZ(0);
+  transition: filter .2s;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  margin-top: 10%;
+}
+
+.button-19:after {
+  background-clip: padding-box;
+  background-color: #1CB0F6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  bottom: -4px;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: -1;
+}
+
+.button-19:main,
+.button-19:focus {
+  user-select: auto;
+}
+
+.button-19:hover:not(:disabled) {
+  filter: brightness(1.1);
+  -webkit-filter: brightness(1.1);
+}
+
+.button-19:disabled {
+  cursor: auto;
+}
+
+.glowing-text {
+  font-size: 16px;
+  color: rgb(248, 248, 42);
+  text-shadow: 0 0 10px rgba(248, 248, 150, 0.789); /* Add a text shadow for the glowing effect */
+}
+
+.github-button {
+  position: absolute;
+  display: inline;
+  top: 2px; /* Adjust the top value as needed to control the vertical positioning */
+  right: 2vw; /* Adjust the right value as needed to control the horizontal positioning */
+  z-index: 1; /* Use z-index if needed to control the stacking order */
+}

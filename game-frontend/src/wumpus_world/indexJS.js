@@ -1,10 +1,10 @@
 const CaveBoard = require('./cave.js');
 const Move = require('./AI_moves.js')
-const KnowledgeBase = require('./knowledgeBase.js')
+const KnowledgeBase = require('./knowledgeBase.js');
 
 
-let cave = CaveBoard.randomCaveGeneration(4, 8, 7)
-// let cave = CaveBoard.initialize()
+let cave = CaveBoard.getBoard();
+let newCave=cave;
 // CaveBoard.printCave(cave)
 let knowledgeBase = KnowledgeBase.initializeKnowledgeBase(cave)
 let numberOfArrors = CaveBoard.getTotalNumberOfWumpus(cave)
@@ -19,7 +19,7 @@ console.log(nextPositionY, nextPositionX);
 while (true) {
 
     let temp = Move.AI_move_By_Propositional_logic(knowledgeBase, cave, numberOfArrors, nextPositionY, nextPositionX);
-
+    console.log(temp);
     //Updating knowledgebase & cave
     knowledgeBase = temp[0];
     cave = temp[1];
@@ -35,7 +35,7 @@ while (true) {
         if (currentState.action == "SHOOT") {
             numberOfArrors--;
             totalPoint -= 10;
-            // make a shoot
+            // make a shoot 
             if(isWumpusKilled) totalPoint += 1000;
             if (i + 1 == totalMoves) {
                 console.log("totalPoint= ", totalPoint);
@@ -64,7 +64,7 @@ while (true) {
             console.log("totalPoint= ", totalPoint);
         }
 
-        // Make a move if move is not null
+        // Make a move if move is not null ui er move
     }
 
     console.log(nextPositionY, nextPositionX)
@@ -87,3 +87,5 @@ while (true) {
 CaveBoard.printCave(cave)
 console.log("total collected gold=", collectedGold)
 console.log("number of Arrorws=", numberOfArrors)
+
+module.exports ={newCave, maximumGold};

@@ -1,0 +1,65 @@
+.aimove {
+  display: flex; /* Set to flex container */
+  flex: 1;
+  flex-direction: row; /* Arrange items in a row */
+  justify-content: flex-start; 
+  align-items: center; /* Center items along the cross axis */
+  max-height: 90%;
+}
+
+
+.aimove .first-div,
+.aimove .second-div,
+.aimove .third-div {
+  max-height: 100%; /* Each div takes up 100% of the parent's max height */
+  overflow-y: auto;/* Enable vertical scrolling if needed */
+  margin-right: 2%;
+}
+
+.aimove > div:nth-child(1) {
+  flex: 20%;
+}
+
+.aimove > div:nth-child(2) {
+  flex: 30%;
+}
+
+.aimove > div:nth-child(3) {
+  flex: 40%;
+  
+}
+
+.first-div {
+  margin-right: 3%;
+  margin-left: 2%;
+}
+
+.possible-action, .all-action {
+  background-color: rgba(255, 255, 255, 0.50) ;
+  color: black;
+  padding-bottom: 2%;
+}
+
+.PBoard {
+    text-align: left;
+    color: #000;
+    font-size: 7px;
+    font-weight: bold;
+  }
+
+  .PBoard table{
+    max-width: 100%;
+  }
+
+  .PBoard td{
+    background-color: aquamarine ;
+    border: solid 3px rgb(0, 6, 117);
+    
+  }
+
+  
+  .glowing-text {
+    font-size: 16px;
+    color: rgb(248, 248, 42);
+    text-shadow: 0 0 10px rgba(248, 248, 150, 0.789); /* Add a text shadow for the glowing effect */
+  }

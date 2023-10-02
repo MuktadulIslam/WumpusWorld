@@ -28,7 +28,7 @@ function printKnowledgebase(knowledgeBase) {
 
 async function performIteration() {
 
-    let cave = CaveBoard.randomCaveGeneration(4, 8, 7)
+    let cave = CaveBoard.randomCaveGeneration(10,10, 4, 8, 7)
     // let cave = CaveBoard.initialize()
     // CaveBoard.printCave(cave)
     let knowledgeBase = KnowledgeBase.initializeKnowledgeBase(cave)
